@@ -21,11 +21,11 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
     if (isPWA && router.pathname !== '/signin') {
       router.push('/signin');
     }
-  }, []);
+  }, [isPWA]);
 
   let ContentComponent = Component;
-
-/*   if (!isStandalone) { 
+ 
+ 
     if (deviceType === 'desktop' || deviceType === 'tablet') {
         ContentComponent = Desktop;
     } else if (deviceType === 'mobile') {
@@ -35,10 +35,8 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
         } else {
             ContentComponent = Instruction;
         }
-    } 
-  } else {
-    ContentComponent = SignIn;
-  } */
+    }
+  
 
   return (
     <>
@@ -71,7 +69,7 @@ MyApp.getInitialProps = async ({ ctx }) => {
       isStandalone = (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches);
   }
 
-  const isPWA = true;
+  const isPWA = ctx.query.source == 'pwa';
   const parser = new UAParser(userAgent);
   const deviceType = parser.getDevice().type || 'desktop';
   const browserName = parser.getBrowser().name;
