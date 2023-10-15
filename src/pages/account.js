@@ -52,11 +52,7 @@ export default function Account() {
           }
     }, [session])
 
-    useEffect(() => {
-        if(!user){
-            router.push('/')
-        }
-    }, [user])
+
 
     // ------------------- COMPONENT RENDER -------------------
     return (

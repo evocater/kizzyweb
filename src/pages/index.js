@@ -61,9 +61,9 @@ export default function Browse() {
             setUser({
               name: data.name,
               email:data.email,
-              balance: Number(data.balance),
+              balance: Number(data.kizz),
               avatar: data.avatar,
-              wallet: data.wallet.walletAddress
+              wallet: data.wallet.walletAddress,
             })
   
 

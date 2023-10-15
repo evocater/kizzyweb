@@ -57,9 +57,7 @@ export default NextAuth({
           response_type: "code"
         }
       },
-      httpOptions: {
-        timeout: 100000,
-      }
+  
     }),
     ],
     callbacks: {
