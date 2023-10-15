@@ -49,9 +49,16 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
       </Head>
       <SessionProvider session={pageProps?.session}>
         <UserProvider >
+        {router.pathname !== "/intro"
+        &&
         <Header />
+        }
+      
         <ContentComponent {...pageProps} />
+        {router.pathname !== "/intro"
+        &&
         <Navbar />
+      }
         </UserProvider>
       </SessionProvider>
     </>

@@ -19,7 +19,7 @@ export default function Account() {
           router.push("/signin");
         },
       });
-    const { user } = useUser();
+  
     // ------------------- STATES -------------------
     // State for showing the Purchase modal
     const [showPurchase, setShowPurchase] = useState(false);
@@ -27,9 +27,17 @@ export default function Account() {
     const [showQr, setShowQr] = useState(false);
     // State for showing the Detail modal
     const [showDetail, setShowDetail] = useState(false);
+    const [user, setUser] = useState({})
+    const [transaction, setTransaction] = useState([])
     // State for showing Transfer modal
     const [showTransfer, setShowTransfer] = useState(false);
     
+    function getDate(dates){
+        const date = new Date(dates * 1000)
+        const newDate = date.toLocaleString()
+        
+        return newDate
+      }
     // ------------------- HANDLERS -------------------
     // Handlers for Purchase modal
     const handleShowPurchase = () => setShowPurchase(true);
@@ -45,12 +53,122 @@ export default function Account() {
 
     // Handle user signing out
    
-    useEffect(() => {
-        if (session?.error === "RefreshAccessTokenError") {
-            localStorage.clear();
-            signOut({ callbackUrl: "/signin" });
+    async function getToken(accessToken) {
+        try {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/v1/login`, {
+            method: "POST",
+            body: JSON.stringify({ accessToken: accessToken }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          
+          if (!res.ok) {
+            throw new Error('Network response was not ok: ' + res.statusText);
           }
-    }, [session])
+      
+          const result = await res.json();
+      
+          if (result.token) {
+            const expiry = (Date.now() + 3600 * 1000).toString();
+            localStorage.setItem("token", result.token);
+            localStorage.setItem("expiry", expiry);
+            await getData(result.token);
+          } else {
+            console.error("Token not found in response:", result);
+          }
+        } catch (err) {
+          console.error("An error occurred while fetching the token:", err);
+        }
+      }
+
+      async function getData(token) {
+        try {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/v1/my`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+    
+            if (!res.ok) {
+                throw new Error('Network response was not ok' + res.statusText);
+            }
+        
+            // Parse JSON data
+            const data = await res.json();
+            console.log(data)
+            setUser({
+              name: data.name,
+              email:data.email,
+              balance: Number(data.kizz),
+              avatar: data.avatar,
+              wallet: data.wallet.walletAddress
+            })
+  
+
+        }catch(err){
+            console.log(err)
+        }
+
+    }
+
+    async function getTransaction(token) {
+        try {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/v1/transaction`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+    
+            if (!res.ok) {
+                throw new Error('Network response was not ok' + res.statusText);
+            }
+        
+            // Parse JSON data
+            const data = await res.json();
+            console.log(data)
+            setTransaction(data)
+  
+
+        }catch(err){
+            console.log(err)
+        }
+
+    }
+
+
+    useEffect(() => {
+       
+        if (session?.token?.accessToken) {
+          const token = localStorage.getItem("token");
+          const expiry = Number(localStorage.getItem("expiry"));
+          
+          const isTokenValid = token && Date.now() < expiry;
+      
+          const handleDataAndToken = async () => {
+            try {
+                console.log(`checking`)
+              if (isTokenValid) {
+                await getData(token);
+                await getTransaction(token);
+              } else {
+                await getToken(session?.token?.accessToken);
+              }
+            } catch (error) {
+              console.error("Error handling data and token: ", error);
+            }
+          };
+      
+          handleDataAndToken();
+          
+        }
+
+        if (session?.token?.error == "RefreshAccessTokenError") {
+          localStorage.clear();
+          signOut({ callbackUrl: "/signin" });
+        }
+      
+      }, [session]);
 
 
 
@@ -107,19 +225,39 @@ export default function Account() {
             </div>
 
 
+            {transaction && transaction.length > 0 && (
+            <>
+              {transaction.map((item, i) => {
+                return(
+                    <div 
+                    key={i}
+                    className="m-4 rounded-md flex justify-between items-center cursor-pointer" /* onClick={handleShowDetail} */>
+                    <div>
+                        <div style={{ fontFamily: 'G8321-ExtraBold', fontSize: '16px' }} className="text-[#1E1E1E]">{item.type}</div>
+                        <div style={{ fontFamily: 'G8321-Regular', fontSize: '12px' }} className="text-gray-500">{getDate(item.timestamp)}</div>
+                    </div>
+                    
+                    <div className="flex items-center">
+                        <Image src="/images/kizzy-coin.png" alt="Kizzy Coin" className="mt-2" width={20} height={20} />
+                        <span style={{ fontFamily: 'G8321-ExtraBold', fontSize: '14px' }} className="ml-2 text-[#6865FD]">{item.type == 'Deposit' ? "-" : "+"}{item.total}</span>
+                    </div>
+                </div>
+
+                )
+                
+              })}
+              </>
+
+            )}
+
+
+
+
+
+
 
             {/* Transaction Log Placeholder */}
-            <div className="m-4 rounded-md flex justify-between items-center cursor-pointer" onClick={handleShowDetail}>
-                <div>
-                    <div style={{ fontFamily: 'G8321-ExtraBold', fontSize: '16px' }} className="text-[#1E1E1E]">Loss</div>
-                    <div style={{ fontFamily: 'G8321-Regular', fontSize: '12px' }} className="text-gray-500">Sep 13, 2023</div>
-                </div>
-                
-                <div className="flex items-center">
-                    <Image src="/images/kizzy-coin.png" alt="Kizzy Coin" className="mt-2" width={20} height={20} />
-                    <span style={{ fontFamily: 'G8321-ExtraBold', fontSize: '14px' }} className="ml-2 text-[#6865FD]">-13</span>
-                </div>
-            </div>
+           
 
 
 
