@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useUser } from '@/context/userContext';
 
 export default function Browse() {
@@ -98,7 +98,7 @@ export default function Browse() {
           
         }
 
-        if (session?.error == "RefreshAccessTokenError") {
+        if (session?.token?.error == "RefreshAccessTokenError") {
           localStorage.clear();
           signOut({ callbackUrl: "/signin" });
         }
