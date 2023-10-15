@@ -98,7 +98,7 @@ export default function Browse() {
           
         }
 
-        if (session?.error === "RefreshAccessTokenError") {
+        if (session?.error == "RefreshAccessTokenError") {
           localStorage.clear();
           signOut({ callbackUrl: "/signin" });
         }

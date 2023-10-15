@@ -48,8 +48,8 @@ export default NextAuth({
   
     providers: [
     GoogleProvider({
-      clientId: "1061585689227-jh2i9idiiffe9e48i3b9t5374jjfqt0d.apps.googleusercontent.com",
-      clientSecret: "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",
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       authorization: {
         params: {
           prompt: "consent",
@@ -73,7 +73,7 @@ export default NextAuth({
           token.refreshToken = account.refresh_token
         }
 
-        console.log(token)
+     
       
         if (Date.now() < token.expires) {
           return token;
