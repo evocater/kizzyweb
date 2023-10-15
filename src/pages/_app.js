@@ -23,9 +23,9 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
     }
   }, [isPWA]);
 
-  let ContentComponent = Component;
+ let ContentComponent = Component;
  
- 
+  /* 
     if (deviceType === 'desktop' || deviceType === 'tablet') {
         ContentComponent = Desktop;
     } else if (deviceType === 'mobile') {
@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
             ContentComponent = Instruction;
         }
     }
-  
+   */
 
   return (
     <>

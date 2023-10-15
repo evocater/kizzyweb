@@ -22,7 +22,7 @@ export default function Header(){
 
     return(
 
-        <div className="fixed top-[10px] w-screen bg-white upper flex items-center justify-between px-4 py-2">
+        <div className="fixed top-0 pt-[20px] w-screen bg-white upper flex items-center justify-between px-4 py-2">
         <div className="flex items-center justify-between w-full relative">
             <div className='relative'>
 

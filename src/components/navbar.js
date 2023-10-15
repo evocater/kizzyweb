@@ -10,7 +10,7 @@ export default function Navbar() {
     {router.pathname !== "/signin"
     &&
 
-    <div className="bg-white h-16 fixed bottom-0 left-0 right-0 flex items-center justify-around">
+    <div className="bg-white h-16 pb-[20px] fixed bottom-0 left-0 right-0 flex items-center justify-around">
       <Link href="/">
         <button className="icon">
           {router.pathname === "/" ? (
