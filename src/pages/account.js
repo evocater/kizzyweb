@@ -27,7 +27,11 @@ export default function Account() {
     const [showQr, setShowQr] = useState(false);
     // State for showing the Detail modal
     const [showDetail, setShowDetail] = useState(false);
-    const [user, setUser] = useState({})
+    const [user, setUser] = useState({
+        avatar: "/images/account-pfp-placeholder.png",
+        name: "",
+        balance: 0
+    })
     const [transaction, setTransaction] = useState([])
     // State for showing Transfer modal
     const [showTransfer, setShowTransfer] = useState(false);
@@ -225,7 +229,7 @@ export default function Account() {
             </div>
 
 
-            {transaction && transaction.length > 0 && (
+            {transaction && transaction.length > 0 ? (
             <>
               {transaction.map((item, i) => {
                 return(
@@ -248,7 +252,25 @@ export default function Account() {
               })}
               </>
 
-            )}
+            )
+              :(
+
+                <div className='flex flex-col justify-center items-center h-[300px]'>
+
+                <Image src="/images/nodata.png" width={40}  height={40} alt="/" unoptimized/> 
+
+                <p className='font-g8-light text-[12px] mt-3'>There are no transactions found!</p>
+
+                </div>
+
+
+
+
+
+              )
+        
+        
+        }
 
 
 
