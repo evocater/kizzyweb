@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
   const router = useRouter();
   let ContentComponent = Component;
 
-  useEffect(() => {
+/*   useEffect(() => {
 
 
     if (isPWA == 'pwa' && router.pathname !== '/signin') {
@@ -27,10 +27,10 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
     }
 
   }, [isPWA])
-
+ */
 
     
-
+/* 
   if (deviceType === 'desktop' || deviceType === 'tablet') {
     ContentComponent = Desktop;
 } else if (deviceType === 'mobile') {
@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
         ContentComponent = Instruction;
     }
 }
-   
+    */
   
 
   return (
