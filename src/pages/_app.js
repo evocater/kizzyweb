@@ -16,17 +16,13 @@ import { UserProvider } from '@/context/userContext';
 function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, osName, isPWA }) {
   
   const router = useRouter();
-
+  let ContentComponent = Component;
   useEffect(() => {
     if (isPWA && router.pathname !== '/signin') {
       router.push('/signin');
-    }
-  }, [isPWA]);
+    }else if(!isPWA){
 
-  let ContentComponent = Component;
- 
-  
-   if (deviceType === 'desktop' || deviceType === 'tablet') {
+      if (deviceType === 'desktop' || deviceType === 'tablet') {
         ContentComponent = Desktop;
     } else if (deviceType === 'mobile') {
         if ((browserName !== 'Chrome' && osName === 'Android') || 
@@ -37,6 +33,14 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
         }
     }
   
+  
+    }
+  }, [isPWA]);
+
+  
+ 
+  
+   
 
   return (
     <>
