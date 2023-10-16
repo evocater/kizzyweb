@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
   let ContentComponent = Component;
  
   
-  /*  if (deviceType === 'desktop' || deviceType === 'tablet') {
+   if (deviceType === 'desktop' || deviceType === 'tablet') {
         ContentComponent = Desktop;
     } else if (deviceType === 'mobile') {
         if ((browserName !== 'Chrome' && osName === 'Android') || 
@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
             ContentComponent = Instruction;
         }
     }
-   */
+  
 
   return (
     <>
@@ -49,13 +49,13 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
       </Head>
       <SessionProvider session={pageProps?.session}>
         <UserProvider >
-        {(router.pathname !== "/intro" && router.pathname !== "/signin")
+        {(router.pathname !== "/intro" && router.pathname !== "/signin" && ContentComponent == Component)
         &&
         <Header />
         }
       
         <ContentComponent {...pageProps} />
-        {router.pathname !== "/intro"
+        {(router.pathname !== "/intro" && ContentComponent == Component)
         &&
         <Navbar />
       }
@@ -78,11 +78,12 @@ MyApp.getInitialProps = async ({ ctx }) => {
 
   const isPWA = ctx.query.source == 'pwa';
   const parser = new UAParser(userAgent);
-  const deviceType = parser.getDevice().type || 'desktop';
+  const deviceType = parser.getDevice().type;
   const browserName = parser.getBrowser().name;
   const osName = parser.getOS().name;
   console.log("User Agent:", userAgent);
 
+  console.log({ deviceType, browserName, isStandalone, osName, isPWA })
   return { deviceType, browserName, isStandalone, osName, isPWA };
 };
 

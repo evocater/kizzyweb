@@ -211,7 +211,7 @@ export default function Browse() {
               <span style={{ fontFamily: 'G8321-SemiBold', fontSize: '12px' }} className="text-black">Match size</span>
               <div className="flex items-center">
                   <img src="/images/kizzy-coin.png" alt="Kizzy Coin" className="mt-2" width={20} height={20} />
-                  <span style={{ fontFamily: 'G8321-ExtraBold', fontSize: '20px' }} className="ml-2 text-[#6865FD]">{Number(item.total).toFixed(2)}</span>
+                  <span style={{ fontFamily: 'G8321-ExtraBold', fontSize: '20px' }} className="ml-2 text-[#6865FD]">{Number(item.total).toFixed(0)}</span>
               </div>
           </div>
     

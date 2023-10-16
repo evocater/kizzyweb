@@ -1,6 +1,6 @@
 const withPWA = require('next-pwa')({
     dest: 'public',
-    disable: false,
+    disable: true,
   })
   
   module.exports = withPWA({
