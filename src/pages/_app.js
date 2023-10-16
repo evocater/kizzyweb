@@ -22,6 +22,7 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
 
 
     if (isPWA == 'pwa' && router.pathname !== '/signin') {
+      ContentComponent = Component
       router.push('/signin');
     }
 
