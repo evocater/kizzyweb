@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
   useEffect(() => {
 
 
-    if (isPWA == 'pwa' && router.pathname !== '/signin') {
+    if (isPWA == 'pwa') {
 
       router.push('/signin');
     }else{
