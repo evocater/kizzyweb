@@ -228,6 +228,7 @@ export default function Account() {
                 </div>
             </div>
 
+            <div className='max-h-[500px] overflow-y-auto'>
 
             {transaction && transaction.length > 0 ? (
             <>
@@ -273,7 +274,7 @@ export default function Account() {
         }
 
 
-
+</div>
 
 
 

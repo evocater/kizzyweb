@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import LottieAnimation from '@/components/lottie';
 
 export default function Intro() {
     const [section, setSection] = useState(1);
+    const [loading, setLoading] = useState(false)
     const router = useRouter();
     
     const handleLeftClick = () => {
@@ -19,7 +21,14 @@ export default function Intro() {
     };
 
     return (
-        <div className="min-h-screen min-w-full bg-white flex flex-col justify-between items-center p-4">
+        <div className={`min-h-screen min-w-full bg-white flex flex-col ${loading ? "justify-center" : "justify-between"} items-center p-4`}>
+           {
+            loading ?
+            <LottieAnimation />
+            :
+
+            <>
+            
             <div className="absolute top-0 bottom-0 left-0 w-1/2 z-10" onClick={handleLeftClick}></div>
             {section !== 3 && (
                 <div className="absolute top-0 bottom-0 right-0 w-1/2 z-10" onClick={handleRightClick}></div>
@@ -99,13 +108,29 @@ export default function Intro() {
                 {/* Fixed Position Button at the Bottom with added px-4 for padding */}
                 <button 
                     style={{ fontFamily: 'G8321-ExtraBold', fontSize: '16px' }} 
-                    onClick={() => router.push('/')}
+                    onClick={() => {
+                        setLoading(true)
+                        setTimeout(() => {
+                            router.push('/')
+                        },3000)
+                        
+                    }
+                    
+                    }
                     className="fixed bottom-11 mx-4 max-w-[calc(100%-4rem)] w-full h-12 rounded-md flex items-center justify-center bg-[#6865FD] text-white">
                     Continue
                 </button>
 
             </>    
         )}
+            
+            
+            </>
+           }
+           
+           
+           
+         
     </div>
   );
 }
