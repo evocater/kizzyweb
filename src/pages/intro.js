@@ -111,7 +111,7 @@ export default function Intro() {
                     onClick={() => {
                         setLoading(true)
                         setTimeout(() => {
-                            router.push('/')
+                            router.push('/') 
                         },3000)
                         
                     }
