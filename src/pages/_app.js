@@ -19,31 +19,28 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
   let ContentComponent = Component;
 
   useEffect(() => {
-    if (isPWA == 'pwa') {
+
+
+    if (isPWA == 'pwa' && router.pathname !== '/signin') {
       router.push('/signin');
-    }else{
-      if (deviceType === 'desktop' || deviceType === 'tablet') {
-        ContentComponent = Desktop;
-    } else if (deviceType === 'mobile') {
-        if ((browserName !== 'Chrome' && osName === 'Android') || 
-            (browserName !== 'Mobile Safari' && osName === 'iOS')) { 
-            ContentComponent = BadBrowser;
-        } else {
-            ContentComponent = Instruction;
-        }
     }
-  
-    }
-     
-
-
-
-
 
   }, [isPWA])
 
 
-  
+    
+
+  if (deviceType === 'desktop' || deviceType === 'tablet') {
+    ContentComponent = Desktop;
+} else if (deviceType === 'mobile') {
+    if ((browserName !== 'Chrome' && osName === 'Android') || 
+        (browserName !== 'Mobile Safari' && osName === 'iOS')) { 
+        ContentComponent = BadBrowser;
+    } else {
+        ContentComponent = Instruction;
+    }
+}
+   
   
 
   return (
