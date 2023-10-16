@@ -7,7 +7,11 @@ import Image from 'next/image';
 export default function Header(){
     const router = useRouter()
     const [header, setHeader] = useState('browse')
-    const handleSignOut = () => signOut({ callbackUrl: '/signin' });
+    const handleSignOut = () => {
+        localStorage.clear();
+        signOut({ callbackUrl: '/signin' })
+    
+};
 
     useEffect(() => {
         if(router.pathname === '/'){
@@ -22,7 +26,7 @@ export default function Header(){
 
     return(
 
-        <div className="fixed top-0 pt-[20px] w-screen bg-white upper flex items-center justify-between px-4 py-2">
+        <div className="fixed top-0 pt-[20px] w-screen z-10 bg-white upper flex items-center justify-between px-4 py-2">
         <div className="flex items-center justify-between w-full relative">
             <div className='relative'>
 

@@ -192,7 +192,7 @@ export default function Account() {
 
 
             {/* Account Info Container */}
-            <div className="p-4 rounded-md mt-16">
+            <div className="p-4 rounded-md mt-16 max-h-[30vh]">
                 <div className="flex items-center">
                     {/* Account Image */}
                     <div className="mr-4">
@@ -243,7 +243,7 @@ export default function Account() {
                     
                     <div className="flex items-center">
                         <Image src="/images/kizzy-coin.png" alt="Kizzy Coin" className="mt-2" width={20} height={20} />
-                        <span style={{ fontFamily: 'G8321-ExtraBold', fontSize: '14px' }} className="ml-2 text-[#6865FD]">{item.type == 'Deposit' ? "-" : "+"}{item.total}</span>
+                        <span style={{ fontFamily: 'G8321-ExtraBold', fontSize: '14px' }} className="ml-2 text-[#6865FD]">{item.type == 'Deposit' ? "+" : "-"} {item.total}</span>
                     </div>
                 </div>
 

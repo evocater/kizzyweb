@@ -23,10 +23,10 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
     }
   }, [isPWA]);
 
- let ContentComponent = Component;
+  let ContentComponent = Component;
  
-  /* 
-    if (deviceType === 'desktop' || deviceType === 'tablet') {
+  
+  /*  if (deviceType === 'desktop' || deviceType === 'tablet') {
         ContentComponent = Desktop;
     } else if (deviceType === 'mobile') {
         if ((browserName !== 'Chrome' && osName === 'Android') || 
@@ -49,7 +49,7 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
       </Head>
       <SessionProvider session={pageProps?.session}>
         <UserProvider >
-        {router.pathname !== "/intro"
+        {(router.pathname !== "/intro" && router.pathname !== "/signin")
         &&
         <Header />
         }
