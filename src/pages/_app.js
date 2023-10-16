@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
   const router = useRouter();
   let ContentComponent = Component;
 
-  useEffect(() => {
+/*   useEffect(() => {
 
 
     if (isPWA == 'pwa') {
@@ -39,7 +39,7 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
 
     }
 
-  }, [isPWA, deviceType])
+  }, [isPWA, deviceType]) */
 
 
     
