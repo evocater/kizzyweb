@@ -2,20 +2,20 @@ import React, {useState} from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 
-function Confirmation({ onCancel, user }) {
+function Confirmation({ onCancel, user, type }) {
 
     const [number, setNumber] = useState(0)
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false)
 
     const handleCancelClick = () => {
-        console.log("CANCEL button clicked.");
         if (onCancel) {
             onCancel();
         }
     };
 
     const handleSubmit = async () =>{
+        console.log(type)
         const token = localStorage.getItem("token");
         const expiry = localStorage.getItem("expiry");
         setLoading(true);
@@ -26,7 +26,7 @@ function Confirmation({ onCancel, user }) {
     
               {
                 method: "POST",
-                body: JSON.stringify({ number: number }),
+                body: JSON.stringify({ number: number, type: type }),
                 headers: {
                   Authorization: `Bearer ${token}`,
                   "Content-Type": "application/json",
