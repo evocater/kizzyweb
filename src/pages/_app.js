@@ -19,7 +19,6 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
   let ContentComponent = Component;
 
   if (isPWA == 'pwa') {
-    ContentComponent = Component
     router.push('/signin');
   }else{
     if (deviceType === 'desktop' || deviceType === 'tablet') {
