@@ -131,7 +131,7 @@ export default function Browse() {
       </div>
       <div>
           <div className="font-g8-semibold text-[14px] text-black font-medium">NEXT POST <span style={{ fontFamily: 'G8321-ExtraBold', fontSize: '14px' }} className="text-[#6865FD]">24HR</span> VIEWS</div>
-          <div className="font-g8-light text-[12px] text-gray-500 text-sm">Last reset: 22:43:21</div>
+          {/* <div className="font-g8-light text-[12px] text-gray-500 text-sm">Last reset: 22:43:21</div> */}
       </div>
   </div>
 
@@ -175,7 +175,7 @@ export default function Browse() {
           <span style={{ fontFamily: 'G8321-SemiBold', fontSize: '12px' }} className="text-black">Match size</span>
           <div className="flex items-center">
               <img src="/images/kizzy-coin.png" alt="Kizzy Coin" className="mt-2" width={20} height={20} />
-              <span style={{ fontFamily: 'G8321-ExtraBold', fontSize: '20px' }} className="ml-2 text-[#6865FD]">25,320</span>
+              <span style={{ fontFamily: 'G8321-ExtraBold', fontSize: '20px' }} className="ml-2 text-[#6865FD]">25,000</span>
           </div>
       </div>
 

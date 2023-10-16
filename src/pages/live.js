@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import React,{useEffect} from 'react';
+import Countdown from 'react-countdown';
 
 export default function Browse() {
   
@@ -12,6 +13,13 @@ export default function Browse() {
       router.push("/signin");
     },
   });
+
+  const renderer = ({ hours, minutes, seconds, completed }) => {
+    if (!completed) {
+      // Render a countdown
+      return <span>{hours}:{minutes}:{seconds}</span>;
+    }
+  };
   useEffect(() => {
     if (session?.error === "RefreshAccessTokenError") {
         localStorage.clear();
@@ -44,7 +52,7 @@ export default function Browse() {
                     {/* Type and Reset Timer */}
                     <div>
                       <div style={{ fontFamily: 'G8321-SemiBold', fontSize: '14px' }} className="text-black font-medium">NEXT POST <span style={{ fontFamily: 'G8321-ExtraBold', fontSize: '14px' }} className="text-[#6865FD]">24HR</span> VIEWS</div>
-                      <div style={{ fontFamily: 'G8321-Light', fontSize: '12px' }} className="text-gray-500 text-sm">Last reset: 22:43:21</div>
+              {/*         <div style={{ fontFamily: 'G8321-Light', fontSize: '12px' }} className="text-gray-500 text-sm">Last reset: 22:43:21</div> */}
                     </div>
                 </div>
 
@@ -97,12 +105,12 @@ export default function Browse() {
                     
                   <span>
                       <span style={{ fontFamily: 'G8321-SemiBold', fontSize: '12px' }} className="text-[#9E9E9E]">Under: </span>
-                      <span style={{ fontFamily: 'G8321-ExtraBold', fontSize: '12px' }} className="text-[#6590FD]">44.1%</span>
+                      <span style={{ fontFamily: 'G8321-ExtraBold', fontSize: '12px' }} className="text-[#6590FD]">44.0%</span>
                   </span>
                   
                   <span>
                       <span style={{ fontFamily: 'G8321-SemiBold', fontSize: '12px' }} className="text-[#9E9E9E]">Over: </span>
-                      <span style={{ fontFamily: 'G8321-ExtraBold', fontSize: '12px' }} className="text-[#FF6E1B]">55.9%</span>
+                      <span style={{ fontFamily: 'G8321-ExtraBold', fontSize: '12px' }} className="text-[#FF6E1B]">56.0%</span>
                   </span>
                 
                 </div>
@@ -121,7 +129,7 @@ export default function Browse() {
                     <div className="flex items-center">
                         <img src="/images/kizzy-coin.png" alt="Kizzy Coin" className="mt-2" width={20} height={20} />
                         <span style={{ fontFamily: 'G8321-ExtraBold', fontSize: '20px' }} className="ml-2 text-[#6865FD]">
-                            25,320
+                            25,100
                         </span>
                     </div>
                 
@@ -145,7 +153,10 @@ export default function Browse() {
                             <img src="/images/timer-icon.png" alt="Timer Icon" width={20} height={20} />
                             {/* Timer Text */}
                             <span style={{ fontFamily: 'G8321-Regular', fontSize: '12px' }} className="ml-2">
-                                23:52:52
+                            <Countdown
+    date={new Date('2024-10-16T00:00:00Z')}
+    renderer={renderer}
+  />
                             </span>
                         </div>
                     </div>
@@ -154,7 +165,7 @@ export default function Browse() {
                     <div className="flex items-center">
                         <img src="/images/kizzy-coin.png" alt="Kizzy Coin" className="mt-2" width={20} height={20} />
                         <span style={{ fontFamily: 'G8321-ExtraBold', fontSize: '20px' }} className="ml-2 text-[#FF6E1B]">
-                            4,000
+                            77
                         </span>
                     </div>
 
