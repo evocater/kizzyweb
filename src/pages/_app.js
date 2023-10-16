@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
 
 
   useEffect(() => {
-    if (isPWA && router.pathname !== '/signin') {
+    if (isPWA == 'pwa' && router.pathname !== '/signin') {
       ContentComponent = Component
       router.push('/signin');
     }
@@ -78,7 +78,7 @@ MyApp.getInitialProps = async ({ ctx }) => {
       isStandalone = (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches);
   }
 
-  const isPWA = ctx.query.source == 'pwa';
+  const isPWA = ctx.query.source;
   const parser = new UAParser(userAgent);
   const deviceType = parser.getDevice().type;
   const browserName = parser.getBrowser().name;
