@@ -23,12 +23,8 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
     if (isPWA == 'pwa' && router.pathname !== '/signin') {
       ContentComponent = Component
       router.push('/signin');
-    }
-  }, [isPWA]);
-
-
-  
-   if (deviceType === 'desktop' || deviceType === 'tablet') {
+    }else if(isPWA !== 'pwa'){
+      if (deviceType === 'desktop' || deviceType === 'tablet') {
         ContentComponent = Desktop;
     } else if (deviceType === 'mobile') {
         if ((browserName !== 'Chrome' && osName === 'Android') || 
@@ -38,6 +34,13 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
             ContentComponent = Instruction;
         }
     }
+
+    }
+  }, [isPWA]);
+
+
+  
+   
   
 
   return (
