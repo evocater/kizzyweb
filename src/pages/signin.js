@@ -32,7 +32,7 @@ export default function Signin() {
 
             {/* Background Logo */}
             <div style={{position: 'fixed', top: '8%', right: 0, width: '60vw', height: '60vw', overflow: 'hidden'}}>
-                <Image src="/images/auth-background-logo.png" alt="Background Logo" width={268} height={268} layout="responsive" />
+                <Image src="/images/auth-background-logo.png" alt="Background Logo" width={268} height={268} />
             </div>
 
     
@@ -41,7 +41,7 @@ export default function Signin() {
             {/* Center Logo */}
             <div className="fixed flex flex-col items-center justify-center w-full h-screen">
                 <div className="w-1/3 mb-20">
-                    <Image src="/images/auth-center-logo.png" alt="Center Logo" layout="responsive" width={130} height={130} />
+                    <Image src="/images/auth-center-logo.png" alt="Center Logo" width={130} height={130} />
                 </div>
             </div>
 
