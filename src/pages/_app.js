@@ -13,40 +13,36 @@ import Navbar from '@/components/navbar';
 import Header from '@/components/header';
 import { UserProvider } from '@/context/userContext';
 
-function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, osName, isPWA }) {
+function MyApp({ Component, pageProps, deviceType, browserName, osName, isPWA }) {
   
   const router = useRouter();
+
+
+  useEffect(() => {
+    if (isPWA && router.pathname !== '/signin') {
+        router.push('/signin');
+    }
+  }, [ ]);
+
   let ContentComponent = Component;
 
-/*   useEffect(() => {
-
-
-    if (isPWA == 'pwa') {
-
-      router.push('/signin');
-    }else{
-      if (deviceType === 'desktop' || deviceType === 'tablet') {
-        ContentComponent = Desktop;
-    } else if (deviceType === 'mobile') {
-        if ((browserName !== 'Chrome' && osName === 'Android') || 
-            (browserName !== 'Mobile Safari' && osName === 'iOS')) { 
-            ContentComponent = BadBrowser;
-        } else {
-            ContentComponent = Instruction;
-        }
-    }
-
-
-    }
-
-  }, [isPWA, deviceType]) */
+  if (isPWA) {
+      ContentComponent = SignIn;
+  } else {
+      if (deviceType === 'desktop' || deviceType === 'tablet' || deviceType === 'none') {
+          ContentComponent = Desktop;
+      } else if (deviceType === 'mobile') {
+          if ((browserName !== 'Chrome' && osName === 'Android') || 
+              (browserName !== 'Mobile Safari' && osName === 'iOS')) {
+              ContentComponent = BadBrowser;
+          } else {
+              ContentComponent = Instruction;
+          }
+      }
+  }
 
 
     
-
-  
-   
-  
 
   return (
     <>
@@ -77,7 +73,6 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
 
 MyApp.getInitialProps = async ({ ctx }) => {
   let userAgent = '';
-  let isStandalone = false;
 
   if (ctx.req) {
       userAgent = ctx.req.headers['user-agent'] || '';
@@ -86,16 +81,15 @@ MyApp.getInitialProps = async ({ ctx }) => {
       isStandalone = (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches);
   }
 
-  const isPWA = ctx.query.source || 'none';
-  console.log(isPWA)
+  const isPWA = ctx.query.source === "pwa" ? true : false;
   const parser = new UAParser(userAgent);
   const deviceType = parser.getDevice().type || 'none';
   const browserName = parser.getBrowser().name;
   const osName = parser.getOS().name;
-  console.log("User Agent:", userAgent);
 
-  console.log({ deviceType, browserName, isStandalone, osName, isPWA })
-  return { deviceType, browserName, isStandalone, osName, isPWA };
+  console.log({ deviceType, browserName, osName, isPWA })
+  
+  return { deviceType, browserName, osName, isPWA };
 };
 
 export default MyApp;
