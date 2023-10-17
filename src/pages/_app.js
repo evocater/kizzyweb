@@ -17,7 +17,9 @@ function MyApp({ Component, pageProps, deviceType, browserName, osName, isPWA })
   
   const router = useRouter();
 
+  let ContentComponent = Component; // Added only if blocker logic is commented out
 
+/* BLOCKER LOGIC 
   useEffect(() => {
     if (isPWA && router.pathname !== '/signin') {
         router.push('/signin');
@@ -40,7 +42,7 @@ function MyApp({ Component, pageProps, deviceType, browserName, osName, isPWA })
           }
       }
   }
-
+*/
 
     
 
@@ -74,11 +76,10 @@ function MyApp({ Component, pageProps, deviceType, browserName, osName, isPWA })
 MyApp.getInitialProps = async ({ ctx }) => {
   let userAgent = '';
 
-  if (ctx.req) {
+  if (ctx.req) { //check if function is executed on serverside
       userAgent = ctx.req.headers['user-agent'] || '';
-  } else {
+  } else { //check if function is executed on clientside
       userAgent = navigator.userAgent;
-      isStandalone = (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches);
   }
 
   const isPWA = ctx.query.source === "pwa" ? true : false;
@@ -88,7 +89,7 @@ MyApp.getInitialProps = async ({ ctx }) => {
   const osName = parser.getOS().name;
 
   console.log({ deviceType, browserName, osName, isPWA })
-  
+
   return { deviceType, browserName, osName, isPWA };
 };
 
