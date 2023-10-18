@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps, deviceType, browserName, osName, isPWA: i
   useEffect(() => {
     console.log("Client-side isPWA value:", isPWA);
     console.log("Current router path:", router.pathname);
-    if (isPWA && router.pathname !== '/signin') {
+    if (isPWA ) {
       console.log("Redirecting to /signin because isPWA is:", isPWA);
       router.push('/signin');
     }
@@ -36,23 +36,6 @@ function MyApp({ Component, pageProps, deviceType, browserName, osName, isPWA: i
     }
   }, []);
 
-  useEffect(() => {
-    const handleRouteChange = (url, { shallow }) => {
-      console.log('App route changed to:', url, "with isPWA value:", isPWA);
-    }
-  
-    router.events.on('routeChangeStart', handleRouteChange);
-  
-    // Cleanup the event listener on component unmount
-    return () => {
-      router.events.off('routeChangeStart', handleRouteChange);
-    };
-  }, [isPWA]);
-  
-  useEffect(() => {
-    const currentIsPWA = window.location.search.includes("source=pwa");
-    console.log("Checking client-side URL for isPWA:", currentIsPWA);
-  }, []);
   
   let ContentComponent = Component;
 
