@@ -1,63 +1,68 @@
 import Image from 'next/image';
 import { signIn, useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router';
 
 export default function Signin() {
     const { data: session, status } = useSession({}); 
-    const [loading, setLoading] = useState(false)
-    const router = useRouter()
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
-        // Change the theme color when the component mounts
         const metaThemeColor = document.querySelector("meta[name=theme-color]");
         metaThemeColor.setAttribute("content", "#7752FE"); 
         
-        // Revert the theme color when the component unmounts
         return () => {
           metaThemeColor.setAttribute("content", "#FFFFFF");
         };
-      }, []);
+    }, []);
 
-      useEffect(() => {
-        if(status == 'authenticated'){
-          router.push('/')
+    useEffect(() => {
+        if(status === 'authenticated'){
+          router.push('/');
         }
-      
-       }, [status])
+    }, [status]);
+
+    const handleGoogleSignIn = async () => {
+      setLoading(true);
+      try {
+          await signIn('google', {callbackUrl:"/intro"});
+      } catch (error) {
+          console.error("Error during Google Sign-In:", error);
+          setLoading(false); // Reset loading state if there's an error
+          alert("There was an error during sign-in. Please try again."); // Inform the user
+      }
+      router.replace(router.asPath);
+    };
 
     return (
+
         <div className="fixed top-0 left-0 w-full h-full bg-gradient-to-b from-[#7752FE] to-[#498DFC] bg-cover bg-fixed ...">
 
 
             {/* Background Logo */}
             <div style={{position: 'fixed', top: '8%', right: 0, width: '60vw', height: '60vw', overflow: 'hidden'}}>
-                <Image src="/images/auth-background-logo.png" alt="Background Logo" width={268} height={268} layout="responsive" />
+                <Image src="/images/auth-background-logo.png" alt="Background Logo" width={268} height={268} />
             </div>
-
-    
 
 
             {/* Center Logo */}
             <div className="fixed flex flex-col items-center justify-center w-full h-screen">
                 <div className="w-1/3 mb-20">
-                    <Image src="/images/auth-center-logo.png" alt="Center Logo" layout="responsive" width={130} height={130} />
+                    <Image src="/images/auth-center-logo.png" alt="Center Logo" width={130} height={130} />
                 </div>
             </div>
 
 
-
-
             {/* Buttons */}
             <button 
-                disabled={loading}
-                onClick={() => {
-                    setLoading(true)
-                    signIn('google', {callbackUrl:"/intro"})
-                    }
-                }
-                style={{ borderWidth: '1.2px', borderColor: '#8999FF', fontFamily: 'G8321-Regular', fontSize: '14px', background: 'rgba(255, 255, 255, 0.2)' }} 
-                className="fixed bottom-11 mx-8 max-w-[calc(100%-4rem)] w-full h-12 rounded-md flex items-center justify-center text-white">
+            disabled={loading}
+            onClick={handleGoogleSignIn}
+            style={{ borderWidth: '1.2px', borderColor: '#8999FF', fontFamily: 'G8321-Regular', fontSize: '14px', background: 'rgba(255, 255, 255, 0.2)' }} 
+            className="fixed bottom-11 mx-8 max-w-[calc(100%-4rem)] w-full h-12 rounded-md flex items-center justify-center text-white"
+            >
+
+
                 {loading
                 ?
                 <svg

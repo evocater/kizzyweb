@@ -7,6 +7,9 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useUser } from '../context/userContext';
 import { useSession } from 'next-auth/react';
+import React, { useRef } from 'react'; //NEW
+import Lottie from 'react-lottie'; //NEW
+import animationData from '../../public/images/loading.json'; //NEW 
 
 
 export default function Account() {
@@ -175,18 +178,68 @@ export default function Account() {
       }, [session]);
 
 
+    // ANIMATION
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const startY = useRef(0);
+  
+    const handleTouchStart = (e) => {
+      if (window.scrollY === 0) startY.current = e.touches[0].pageY;
+    };
+  
+    const handleTouchMove = (e) => {
+      const currentY = e.touches[0].pageY;
+      if (currentY > startY.current + 50) {
+        setIsRefreshing(true);
+      }
+    };
+  
+    const handleTouchEnd = () => {
+      if (isRefreshing) {
+        setTimeout(() => {
+          setIsRefreshing(false);
+        }, 2000);  // 2 seconds delay for demo purposes
+      }
+    };
+  
+    useEffect(() => {
+      window.addEventListener('touchstart', handleTouchStart);
+      window.addEventListener('touchmove', handleTouchMove);
+      window.addEventListener('touchend', handleTouchEnd);
+      
+      return () => {
+        window.removeEventListener('touchstart', handleTouchStart);
+        window.removeEventListener('touchmove', handleTouchMove);
+        window.removeEventListener('touchend', handleTouchEnd);
+      }
+    }, [isRefreshing]);
+  
+  const LottieAnimation = () => {
+    const defaultOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: animationData,
+        rendererSettings: {
+            preserveAspectRatio: 'xMidYMid slice'
+        }
+    };
 
+    return (
+        <Lottie options={defaultOptions} height={200} width={200} isClickToPauseDisabled={true} />
+    );
+  };
+  
     // ------------------- COMPONENT RENDER -------------------
     return (
+
         <>
             {showPurchase && <Purchase onClose={handleClosePurchase} onShowQr={() => setShowQr(true)}  />}
             {showQr && <Qr onClose={() => setShowQr(false)} wallet={user.wallet || null} />}
             {showDetail && <Detail onClose={handleCloseDetail} />}
             {showTransfer && <Transfer onClose={handleCloseTransfer} />}
         
-            {/* Page title and Logout Button */}
+            {/* Loading Animation */}
            
-
+            {isRefreshing && <LottieAnimation />}
 
 
 
@@ -274,9 +327,7 @@ export default function Account() {
         }
 
 
-</div>
-
-
+          </div>
 
 
             {/* Transaction Log Placeholder */}

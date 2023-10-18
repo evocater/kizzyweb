@@ -8,23 +8,52 @@ import BadBrowser from '@/components/blockers/badbrowser';
 import Instruction from '@/components/blockers/instruction';
 import SignIn from '@/pages/signin';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '@/components/navbar';
 import Header from '@/components/header';
 import { UserProvider } from '@/context/userContext';
 
-function MyApp({ Component, pageProps, deviceType, browserName, osName, isPWA }) {
-  
+function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, osName, isPWA: initialIsPWA }) {
+  const [isPWA, setIsPWA] = useState(initialIsPWA);
   const router = useRouter();
 
-  let ContentComponent = Component; // Added only if blocker logic is commented out
-
-/* BLOCKER LOGIC 
   useEffect(() => {
+    console.log("Client-side isPWA value:", isPWA);
+    console.log("Current router path:", router.pathname);
     if (isPWA && router.pathname !== '/signin') {
-        router.push('/signin');
+      console.log("Redirecting to /signin because isPWA is:", isPWA);
+      router.push('/signin');
     }
-  }, [ ]);
+  }, []);
+  
+  useEffect(() => {
+    if (window.location.search.includes("source=pwa")) {
+      setIsPWA(true);
+      sessionStorage.setItem('isPWA', 'true');
+    } else {
+      const storedIsPWA = sessionStorage.getItem('isPWA');
+      setIsPWA(storedIsPWA === 'true');
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleRouteChange = (url, { shallow }) => {
+      console.log('App route changed to:', url, "with isPWA value:", isPWA);
+    }
+  
+    router.events.on('routeChangeStart', handleRouteChange);
+  
+    // Cleanup the event listener on component unmount
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, [isPWA]);
+  
+  useEffect(() => {
+    const currentIsPWA = window.location.search.includes("source=pwa");
+    console.log("Checking client-side URL for isPWA:", currentIsPWA);
+  }, []);
+  
 
   let ContentComponent = Component;
 
@@ -42,8 +71,6 @@ function MyApp({ Component, pageProps, deviceType, browserName, osName, isPWA })
           }
       }
   }
-*/
-
     
 
   return (
@@ -61,8 +88,9 @@ function MyApp({ Component, pageProps, deviceType, browserName, osName, isPWA })
         &&
         <Header />
         }
-      
+    
         <ContentComponent {...pageProps} />
+
         {(router.pathname !== "/intro" && ContentComponent == Component)
         &&
         <Navbar />
@@ -75,12 +103,15 @@ function MyApp({ Component, pageProps, deviceType, browserName, osName, isPWA })
 
 MyApp.getInitialProps = async ({ ctx }) => {
   let userAgent = '';
+  let isStandalone = false;
 
-  if (ctx.req) { //check if function is executed on serverside
+  if (ctx.req) { 
       userAgent = ctx.req.headers['user-agent'] || '';
-  } else { //check if function is executed on clientside
+  } else { 
       userAgent = navigator.userAgent;
+      isStandalone = (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches);
   }
+  
 
   const isPWA = ctx.query.source === "pwa" ? true : false;
   const parser = new UAParser(userAgent);
@@ -90,7 +121,7 @@ MyApp.getInitialProps = async ({ ctx }) => {
 
   console.log({ deviceType, browserName, osName, isPWA })
 
-  return { deviceType, browserName, osName, isPWA };
+  return { deviceType, browserName, isStandalone, osName, isPWA };
 };
 
 export default MyApp;

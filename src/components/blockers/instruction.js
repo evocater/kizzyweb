@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
-import { useEffect } from 'react';
 
-export default function Instruction() {
+export default function Instruction( ) {
 
     useEffect(() => {
+        // Update theme color
         const metaThemeColor = document.querySelector("meta[name=theme-color]");
         
         if (metaThemeColor) {
@@ -15,9 +15,9 @@ export default function Instruction() {
                 metaThemeColor.setAttribute("content", "#FFFFFF");
             };
         }
-    }, []);
-    return (
+    })
 
+    return (
         <div className="fixed items-center w-full h-full bg-gradient-to-b from-[#473198] to-[#304F97] bg-cover bg-fixed">
 
             {/* Background Logo */}
@@ -27,11 +27,12 @@ export default function Instruction() {
 
             <div className="flex flex-col items-center justify-center w-[95vw] bg-white p-10 rounded-[25px] shadow-lg text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                 <Image src="/images/add-to-homescreen.png" alt="Browse" width={88} height={88} />
-                    <h2 className="font-bold mb-2 mt-6" style={{fontFamily: 'G8321-Bold', fontSize: '20px'}}>Add to home screen</h2>
-                    <p style={{fontFamily: 'G8321-Regular', fontSize: '14px'}} className="text-[#9E9E9E] mt-4">
-                        To install the app, you need to add Kizzy to your home screen. 
-                        Tap the share icon and choose Add to Home Screen in the options. Next, save and open the Kizzy app.
-                    </p>
+                <h2 className="font-bold mb-2 mt-6" style={{fontFamily: 'G8321-Bold', fontSize: '20px'}}>Add to home screen</h2>
+                
+                <p style={{fontFamily: 'G8321-Regular', fontSize: '14px'}} className="text-[#9E9E9E] mt-4">
+                    To install the app, you need to add Kizzy to your home screen. 
+                    Tap the share icon and choose Add to Home Screen in the options. Next, save and open the Kizzy app.
+                </p>
             </div>
 
             {/* Buttons */}
@@ -44,4 +45,4 @@ export default function Instruction() {
 
         </div>
     );
-}
+};
