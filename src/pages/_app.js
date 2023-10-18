@@ -13,7 +13,7 @@ import Navbar from '@/components/navbar';
 import Header from '@/components/header';
 import { UserProvider } from '@/context/userContext';
 
-function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, osName, isPWA: initialIsPWA }) {
+function MyApp({ Component, pageProps, deviceType, browserName, osName, isPWA: initialIsPWA }) {
   const [isPWA, setIsPWA] = useState(initialIsPWA);
   const router = useRouter();
 
@@ -54,7 +54,6 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
     console.log("Checking client-side URL for isPWA:", currentIsPWA);
   }, []);
   
-
   let ContentComponent = Component;
 
   if (isPWA) {
@@ -103,13 +102,11 @@ function MyApp({ Component, pageProps, deviceType, browserName, isStandalone, os
 
 MyApp.getInitialProps = async ({ ctx }) => {
   let userAgent = '';
-  let isStandalone = false;
 
   if (ctx.req) { 
       userAgent = ctx.req.headers['user-agent'] || '';
   } else { 
       userAgent = navigator.userAgent;
-      isStandalone = (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches);
   }
   
 
@@ -119,9 +116,9 @@ MyApp.getInitialProps = async ({ ctx }) => {
   const browserName = parser.getBrowser().name;
   const osName = parser.getOS().name;
 
-  console.log({ deviceType, browserName, osName, isPWA })
+  console.log({ deviceType, browserName, osName, isPWA })  
 
-  return { deviceType, browserName, isStandalone, osName, isPWA };
+  return { deviceType, browserName, osName, isPWA };  
 };
 
 export default MyApp;
